@@ -1,0 +1,20 @@
+[Unit]
+Description=activemq-hub-slave1 Presence
+BindsTo=activemq-hub-slave1@%i.service
+After=activemq-hub-slave1@%i.service
+
+[Service]
+Restart=always
+RestartSec=30
+EnvironmentFile=/etc/environment
+Environment="AMQ_HUB_PORT=61726"
+Environment="AMQ_HUB_REPLIC_PORT=61729"
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/core%i-1 '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_PORT}}'
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/activemq/hub%i/slave1 '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_PORT}}'
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/_tcp/_activemq/_openwire/core%i-1 '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_PORT}}'
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/_tcp/_activemq/_leveldb/core%i-1 '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_REPLIC_PORT}}'
+ExecStart=/usr/bin/echo "Set activemq hub slave1 %i in skydns2"
+
+[X-Fleet]
+MachineOf=activemq-hub-slave1@%i.service
+MachineMetadata=role=back

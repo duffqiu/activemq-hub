@@ -1,0 +1,20 @@
+[Unit]
+Description=activemq-hub-master Presence
+BindsTo=activemq-hub-master@%i.service
+After=activemq-hub-master@%i.service
+
+[Service]
+Restart=always
+RestartSec=30
+EnvironmentFile=/etc/environment
+Environment="AMQ_HUB_PORT=61716"
+Environment="AMQ_HUB_REPLIC_PORT=61719"
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/core%i-0 '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_PORT}}'
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/activemq/hub%i/master '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_PORT}}'
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/_tcp/_activemq/_openwire/core%i-0 '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_PORT}}'
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/_tcp/_activemq/_leveldb/core%i-0 '{"host":"${COREOS_PRIVATE_IPV4}","port":${AMQ_HUB_REPLIC_PORT}}'
+ExecStart=/usr/bin/echo "Set activemq hub master %i in skydns2"
+
+[X-Fleet]
+MachineOf=activemq-hub-master@%i.service
+MachineMetadata=role=back

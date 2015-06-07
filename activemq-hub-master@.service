@@ -1,0 +1,37 @@
+[Unit]
+Description=activemq hub master service unit
+After=docker.service
+Wants=activemq-hub-master-presence@%i.service
+
+[Service]
+Restart=always
+RestartSec=15
+TimeoutSec=120
+EnvironmentFile=/etc/environment
+Environment="DOMAIN_NAME=cluster.duffqiu.org"
+ExecStartPre=-/usr/bin/docker kill activemq-hub-master-%i
+ExecStartPre=-/usr/bin/docker rm  activemq-hub-master-%i
+ExecStartPre=-/usr/bin/docker pull duffqiu/activemq-hub:latest
+ExecStart=/usr/bin/docker run  \
+                              --name activemq-hub-master-%i \
+                              -e ZK_STR=zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181 \
+                              -e NODE_ID=%i \
+                              -e ROLE=0 \
+                              -e HUB_NUM=3 \
+                              -e REPLIC_NUM=2 \
+                              -e REPLIC_WEIGHT=100 \
+                              --hostname core%i-0.${DOMAIN_NAME} \
+                              --dns-search ${DOMAIN_NAME} \
+                              --dns ${COREOS_PRIVATE_IPV4} \
+                              -p ${COREOS_PRIVATE_IPV4}:61716:61716 \
+                              -p ${COREOS_PRIVATE_IPV4}:61719:61719 \
+                              -v /mirror/activemq-hub/%i/master/data:/activemq/data \
+                              duffqiu/activemq-hub:latest
+ExecStop=-/usr/bin/docker stop activemq-hub-master-%i
+
+[X-Fleet]
+Conflicts=activemq-hub-master@*.service 
+Conflicts=activemq-hub-slave1@%i.service 
+Conflicts=activemq-hub-slave2@%i.service
+MachineMetadata=role=back
+
