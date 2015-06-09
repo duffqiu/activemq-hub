@@ -30,7 +30,7 @@ if [ -z $NODE_ID ]; then
 fi
 
 if [ -z $BROKER_NAME ]; then
-  BROKER_NAME="core1" 
+  BROKER_NAME="core$NODE_ID" 
 fi
 
 if [ -z $HUB_NUM ]; then
@@ -47,7 +47,6 @@ if [ -z $BASE_PORT ]; then
 fi
 
 NODE_START=1
-NW_BK_STR=""
 
 let OPENWIRE_PORT=$BASE_PORT+$ROLE*10
 
