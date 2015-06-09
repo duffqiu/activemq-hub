@@ -29,18 +29,20 @@ if [ -z $NODE_ID ]; then
   NODE_ID=1 
 fi
 
+#ROLE=0  (0:master, 1:slave 1, 2:slave2)
+if [ -z $ROLE ]; then
+  ROLE=0 
+fi
+
 if [ -z $BROKER_NAME ]; then
-  BROKER_NAME="core$NODE_ID" 
+  BROKER_NAME="core$NODE_ID-$ROLE" 
 fi
 
 if [ -z $HUB_NUM ]; then
   HUB_NUM=1 
 fi
 
-#ROLE=0  (0:master, 1:slave 1, 2:slave2)
-if [ -z $ROLE ]; then
-  ROLE=0 
-fi
+
 
 if [ -z $BASE_PORT ]; then
   BASE_PORT=61716 
