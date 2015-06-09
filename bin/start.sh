@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#ROLE=0  (0:master, 1:slave 1, 2:slave2)
+if [ -z $ROLE ]; then
+  ROLE=0 
+fi
+
 if [ -z $ZK_NUM ]; then
   ZK_NUM=3 
 fi
@@ -8,9 +13,11 @@ if [ -z $REPLIC_NUM ]; then
   REPLIC_NUM=0 
 fi
 
-if [ -z $REPLIC_PORT ]; then
-  REPLIC_PORT=61719 
+if [ -z $BASE_REPLIC_PORT ]; then
+  BASE_REPLIC_PORT=61719 
 fi
+
+let REPLIC_PORT=$BASE_REPLIC_PORT+$ROLE*10
 
 let ZK_START=$ZK_NUM-1
 ZK_STR="zookeeper-1:2181"
@@ -29,11 +36,6 @@ if [ -z $NODE_ID ]; then
   NODE_ID=1 
 fi
 
-#ROLE=0  (0:master, 1:slave 1, 2:slave2)
-if [ -z $ROLE ]; then
-  ROLE=0 
-fi
-
 if [ -z $BROKER_NAME ]; then
   BROKER_NAME="core$NODE_ID-$ROLE" 
 fi
@@ -41,8 +43,6 @@ fi
 if [ -z $HUB_NUM ]; then
   HUB_NUM=1 
 fi
-
-
 
 if [ -z $BASE_PORT ]; then
   BASE_PORT=61716 
@@ -63,7 +63,7 @@ until [ $NODE_START -gt $HUB_NUM ]; do
 cat >> .nw.config << EOF
           <networkConnector
             name="topic-core$NODE_ID->core$NODE_START"
-            uri="masterslave:(nio://core$NODE_START:$MASTER_PORT,nio://core$NODE_START-s1:$SLAVE1_PORT,nio://core$NODE_START-s2:$SLAVE2_PORT)"
+            uri="masterslave:(nio://core$NODE_START-0:$MASTER_PORT,nio://core$NODE_START-1:$SLAVE1_PORT,nio://core$NODE_START-2:$SLAVE2_PORT)"
             duplex="true"
             decreaseNetworkConsumerPriority="false"
             networkTTL="3"
@@ -76,7 +76,7 @@ cat >> .nw.config << EOF
           </networkConnector>
           <networkConnector
             name="queue-core$NODE_ID->core$NODE_START"
-            uri="masterslave:(nio://core$NODE_START:$MASTER_PORT,nio://core$NODE_START-s1:$SLAVE1_PORT,nio://core$NODE_START-s2:$SLAVE2_PORT)"
+            uri="masterslave:(nio://core$NODE_START-0:$MASTER_PORT,nio://core$NODE_START-1:$SLAVE1_PORT,nio://core$NODE_START-2:$SLAVE2_PORT)"
             duplex="true"
             decreaseNetworkConsumerPriority="false"
             networkTTL="3"
