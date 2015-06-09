@@ -60,8 +60,8 @@
         <persistenceAdapter>
             <replicatedLevelDB
               directory="${activemq.data}"
-              replicas="3"
-              bind="tcp://0.0.0.0:61619"
+              replicas="%replic.num%"
+              bind="tcp://0.0.0.0:%replic.port%"
               zkAddress="%zk.str%"
               zkPath="/activemq/hub/%node.id%/leveldb-stores"
               hostname="%broker.name%"
@@ -97,7 +97,7 @@
         -->
         <transportConnectors>
             <!-- DOS protection, limit concurrent connections to 20 and frame size to 100MB -->
-            <transportConnector name="openwire" uri="nio://0.0.0.0:61616?maximumConnections=20&amp;wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="openwire" uri="nio://0.0.0.0:%openwire.port%?maximumConnections=20&amp;wireFormat.maxFrameSize=104857600"/>
         </transportConnectors>
 
         <!-- destroy the spring context on shutdown to stop jetty -->
