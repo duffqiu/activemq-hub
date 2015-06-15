@@ -78,7 +78,7 @@
           <systemUsage>
             <systemUsage>
                 <memoryUsage>
-                    <memoryUsage percentOfJvmHeap="70"/>
+                    <memoryUsage limit="64 mb"/>
                 </memoryUsage>
                 <storeUsage>
                     <storeUsage limit="1 gb"/>
@@ -96,8 +96,8 @@
             http://activemq.apache.org/configuring-transports.html
         -->
         <transportConnectors>
-            <!-- DOS protection, limit concurrent connections to 20 and frame size to 100MB -->
-            <transportConnector name="openwire" uri="nio://0.0.0.0:%openwire.port%?maximumConnections=20&amp;wireFormat.maxFrameSize=104857600"/>
+            <!-- DOS protection, limit concurrent connections to 100 and frame size to 100MB -->
+            <transportConnector name="openwire" uri="nio://0.0.0.0:%openwire.port%?maximumConnections=100&amp;wireFormat.maxFrameSize=104857600"/>
         </transportConnectors>
 
         <!-- destroy the spring context on shutdown to stop jetty -->

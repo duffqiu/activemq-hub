@@ -25,6 +25,7 @@ ExecStart=/usr/bin/docker run  \
                               --dns ${COREOS_PRIVATE_IPV4} \
                               -p ${COREOS_PRIVATE_IPV4}:61726:61726 \
                               -p ${COREOS_PRIVATE_IPV4}:61729:61729 \
+                              -p ${COREOS_PRIVATE_IPV4}:9171:8161 \
                               -v /mirror/activemq-hub/%i/slave1/data:/activemq/data \
                               duffqiu/activemq-hub:latest
 ExecStop=-/usr/bin/docker stop activemq-hub-slave1-%i
