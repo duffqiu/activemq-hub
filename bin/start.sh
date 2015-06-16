@@ -59,7 +59,7 @@ until [ $NODE_START -gt $HUB_NUM ]; do
 cat >> .nw.config << EOF
           <networkConnector
             name="topic-core$NODE_ID->core$NODE_START"
-            uri="masterslave:(nio://core$NODE_START-0:$MASTER_PORT,nio://core$NODE_START-1:$SLAVE1_PORT,nio://core$NODE_START-2:$SLAVE2_PORT)"
+            uri="static:failover:(nio://core$NODE_START-0:$MASTER_PORT,nio://core$NODE_START-1:$SLAVE1_PORT,nio://core$NODE_START-2:$SLAVE2_PORT)?randomize=false"
             duplex="true"
             decreaseNetworkConsumerPriority="false"
             networkTTL="3"
@@ -72,7 +72,7 @@ cat >> .nw.config << EOF
           </networkConnector>
           <networkConnector
             name="queue-core$NODE_ID->core$NODE_START"
-            uri="masterslave:(nio://core$NODE_START-0:$MASTER_PORT,nio://core$NODE_START-1:$SLAVE1_PORT,nio://core$NODE_START-2:$SLAVE2_PORT)"
+            uri="static:failover:(nio://core$NODE_START-0:$MASTER_PORT,nio://core$NODE_START-1:$SLAVE1_PORT,nio://core$NODE_START-2:$SLAVE2_PORT)?randomize=false"
             duplex="true"
             decreaseNetworkConsumerPriority="false"
             networkTTL="3"

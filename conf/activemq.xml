@@ -57,7 +57,6 @@
             <managementContext createConnector="false"/>
         </managementContext>
 
-        <!--
         <persistenceAdapter>
             <replicatedLevelDB
               directory="${activemq.data}"
@@ -69,13 +68,7 @@
               weight="%leveldb.weight%"
               />
         </persistenceAdapter>
-        -->
 
-        <persistenceAdapter>
-            <levelDB
-              directory="${activemq.data}"
-            />
-        </persistenceAdapter>
 
 
           <!--
