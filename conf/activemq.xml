@@ -58,15 +58,8 @@
         </managementContext>
 
         <persistenceAdapter>
-            <replicatedLevelDB
+            <levelDB
               directory="${activemq.data}"
-              replicas="%replic.num%"
-              bind="tcp://0.0.0.0:%replic.port%"
-              zkAddress="%zk.str%"
-              zkPath="/activemq/hub/%node.id%/leveldb-stores"
-              hostname="%broker.name%"
-              weight="%leveldb.weight%"
-              zkSessionTimeout="4s"
               />
         </persistenceAdapter>
 
