@@ -5,10 +5,10 @@ RUN yum -y update
 
 RUN yum -y install sed tar curl
 
-RUN curl -LO https://repository.apache.org/content/repositories/snapshots/org/apache/activemq/apache-activemq/5.12-SNAPSHOT/apache-activemq-5.12-20150611.222231-172-bin.tar.gz
-RUN tar -xzf apache-activemq-5.12-20150611.222231-172-bin.tar.gz
+RUN curl -LO https://repository.apache.org/content/repositories/snapshots/org/apache/activemq/apache-activemq/5.12-SNAPSHOT/apache-activemq-5.12-20150618.002915-179-bin.tar.gz
+RUN tar -xzf apache-activemq-5.12-20150618.002915-179-bin.tar.gz
 
-RUN rm -rf apache-activemq-5.12-20150611.222231-172-bin.tar.gz
+RUN rm -rf apache-activemq-5.12-20150618.002915-179-bin.tar.gz
 
 RUN mv /apache-activemq-5.12-SNAPSHOT /activemq
 
